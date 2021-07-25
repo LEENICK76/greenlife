@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="no-js" lang="en">
+{% include 'core/base/head.html' %}
+<body class="biolife-body">
+ <!-- Preloader -->
+    {% include 'core/base/preloader.html' %}
+
+    <!-- HEADER -->
+    {% include 'core/base/header.html' %}
+{% block body %}{% endblock %}
+        <!-- FOOTER -->
+    {% include 'core/base/footer.html' %}
+
+    <!--Footer For Mobile-->
+    {% include 'core/base/footer-for-mobile.html' %}
+
+    <!-- Scroll Top Button -->
+    {% include 'core/base/scroll-top.html' %}
+
+    <!-- custom scripts -->
+    {% include 'core/base/scripts.html' %}
+
+
+</body>
+
+</html>
