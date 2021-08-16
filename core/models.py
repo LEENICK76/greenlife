@@ -14,11 +14,11 @@ class Customer(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=30, blank=False, unique=True)
-    slug = models.SlugField(max_length=288)
+    name = models.CharField(max_length=255, blank=False, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
 
     class Meta:
-        verbose_name_plural = 'categories'
+        verbose_name_plural = 'Categories'
 
     def __str__(self):
         return self.name
@@ -40,6 +40,7 @@ class Product(models.Model):
     posted_by = models.ForeignKey(Seller, related_name='seller', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
+    image = models.ImageField(null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     in_stock = models.BooleanField(default=True)
@@ -56,6 +57,14 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
+
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_order', on_delete=models.SET_NULL, null=True)
@@ -64,7 +73,19 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return self.id
+        return '%s' '%s' % (self.customer, f"'s order, id: {self.id}")
+
+    @property
+    def get_cart_total(self):
+        order_items = self.orderitem_set.all()
+        total = sum([item.get_total for item in order_items])
+        return total
+
+    @property
+    def get_cart_items(self):
+        order_items = self.orderitem_set.all()
+        total = sum([item.quantity for item in order_items])
+        return total
 
 
 class OrderItem(models.Model):
@@ -72,6 +93,14 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s' '%s' '%s' '%s' % (self.order.customer, " 's ", f"{self.quantity} ", self.product)
+
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
 
 
 class ShippingAddress(models.Model):
@@ -85,5 +114,4 @@ class ShippingAddress(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '%s %s' % (self.address, self.number)
-
+        return '%s %s' % (self.address, f"{self.number}")

@@ -71,48 +71,50 @@
                                 <a href="#" class="link-forward">Edit cart</a>
                             </div>
                             <div class="cart-list-box short-type">
-                                <span class="number">2 items</span>
+                                <span class="number">{{ order.get_cart_items }} items</span>
                                 <ul class="cart-list">
+                                    {% for order_item in order_items %}
                                     <li class="cart-elem">
                                         <div class="cart-item">
                                             <div class="product-thumb">
                                                 <a class="prd-thumb" href="#">
-                                                    <figure><img src="{% static 'assets/images/shippingcart/pr-01.jpg' %}" width="113" height="113" alt="shop-cart" ></figure>
+                                                    <figure><img src="{{ order_item.product.imageURL }}" width="113" height="113" alt="shop-cart" ></figure>
                                                 </a>
                                             </div>
                                             <div class="info">
-                                                <span class="txt-quantity">1X</span>
-                                                <a href="#" class="pr-name">National Fresh Fruit</a>
+                                                <span class="txt-quantity">{{ order_item.quantity }}X</span>
+                                                <a href="#" class="pr-name">{{ order_item.product.name }}</a>
                                             </div>
                                             <div class="price price-contain">
-                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
-                                                <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
+                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ order_item.product.price }} </span></ins>
+                                                <ins><span class="price-amount"><span class="currencySymbol">&nbsp;= £</span>{{ order_item.get_total }}</span></ins>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="cart-elem">
-                                        <div class="cart-item">
-                                            <div class="product-thumb">
-                                                <a class="prd-thumb" href="#">
-                                                    <figure><img src="{% static 'assets/images/shippingcart/pr-02.jpg' %}" width="113" height="113" alt="shop-cart" ></figure>
-                                                </a>
-                                            </div>
-                                            <div class="info">
-                                                <span class="txt-quantity">1X</span>
-                                                <a href="#" class="pr-name">National Fresh Fruit</a>
-                                            </div>
-                                            <div class="price price-contain">
-                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
-                                                <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    {% endfor %}
+{#                                    <li class="cart-elem">#}
+{#                                        <div class="cart-item">#}
+{#                                            <div class="product-thumb">#}
+{#                                                <a class="prd-thumb" href="#">#}
+{#                                                    <figure><img src="{% static 'assets/images/shippingcart/pr-02.jpg' %}" width="113" height="113" alt="shop-cart" ></figure>#}
+{#                                                </a>#}
+{#                                            </div>#}
+{#                                            <div class="info">#}
+{#                                                <span class="txt-quantity">1X</span>#}
+{#                                                <a href="#" class="pr-name">National Fresh Fruit</a>#}
+{#                                            </div>#}
+{#                                            <div class="price price-contain">#}
+{#                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>#}
+{#                                                <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </li>#}
                                 </ul>
                                 <ul class="subtotal">
                                     <li>
                                         <div class="subtotal-line">
                                             <b class="stt-name">Subtotal</b>
-                                            <span class="stt-price">£170.00</span>
+                                            <span class="stt-price">{{ order.get_cart_total }}</span>
                                         </div>
                                     </li>
                                     <li>
