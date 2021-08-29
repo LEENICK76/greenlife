@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+from Products.models import Product, Seller
+
+
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, null=True)
@@ -11,59 +14,6 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=255, blank=False, unique=True)
-    slug = models.SlugField(max_length=255, unique=True)
-
-    class Meta:
-        verbose_name_plural = 'Categories'
-
-    def __str__(self):
-        return self.name
-
-
-class Seller(models.Model):
-    user = models.OneToOneField(User, blank=False, null=False, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, null=False)
-    email = models.CharField(max_length=255, null=False)
-    county = models.CharField(max_length=255)
-    number = models.IntegerField(unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
-    posted_by = models.ForeignKey(Seller, related_name='seller', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
-    image = models.ImageField(null=True, blank=True)
-    description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    in_stock = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
-    is_featured = models.BooleanField(default=False)
-    best_seller = models.BooleanField(default=False)
-    top_rated = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural = 'Products'
-        ordering = ('-created',)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
 
 
 class Order(models.Model):
@@ -95,7 +45,7 @@ class OrderItem(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '%s' '%s' '%s' '%s' % (self.order.customer, " 's ", f"{self.quantity} ", self.product)
+        return '%s' '%s' % (f"{self.quantity} ", self.product)
 
     @property
     def get_total(self):
