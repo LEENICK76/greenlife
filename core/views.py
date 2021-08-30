@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from django.http import JsonResponse
@@ -82,3 +83,32 @@ def update_item(request):
     if order_item.quantity <= 0:
         order_item.delete()
     return JsonResponse('Item was added', safe=False)
+
+
+def process_order(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        total = float(data['form']['total'])
+        order.transaction_id = transaction_id
+
+        if total == order.get_cart_total:
+            order.complete = True
+        order.save()
+
+        if order.complete:
+            ShippingAddress.objects.create(
+                customer=customer,
+                order=order,
+                number=customer.number,
+                address=data['shippingInfo']['address'],
+                county=data['shippingInfo']['county'],
+                country=data['shippingInfo']['country'],
+            )
+    response = {
+        'Payment': 'Complete',
+    }
+    print(request.body)
+    return JsonResponse(response, safe=False)

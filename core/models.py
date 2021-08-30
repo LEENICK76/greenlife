@@ -10,7 +10,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, null=True)
     email = models.CharField(max_length=255, null=True)
-    number = models.IntegerField
+    number = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -56,7 +56,6 @@ class OrderItem(models.Model):
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-    seller = models.ForeignKey(Seller, on_delete=models.SET_NULL, null=True, blank=True)
     number = models.IntegerField()
     address = models.CharField(max_length=255, null=True)
     county = models.CharField(max_length=255, null=True)
