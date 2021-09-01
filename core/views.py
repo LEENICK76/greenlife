@@ -7,55 +7,41 @@ from .models import *
 
 
 # Create your views here.
+from .utils import cookie_cart, cart_data
+
 
 def home(request):
     products = Product.objects.all()
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        order_items = order.orderitem_set.all()
-        cart_items = order.get_cart_items
-    else:
-        order_items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
-        cart_items = order['get_cart_items']
+    data = cart_data(request)
+    order_items = data['order_items']
+    order = data['order']
+    cart_items = data['cart_items']
 
     context = {
         'products': products,
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'order_items': order_items
     }
     return render(request, 'core/home.html', context=context)
 
 
 def cart(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        order_items = order.orderitem_set.all()
-    else:
-        customer = {}
-        order_items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
+    data = cart_data(request)
+    order_items = data['order_items']
+    order = data['order']
+    cart_items = data['cart_items']
 
-    context = {'order_items': order_items, 'order': order}
-    print(context)
-    print(customer)
+    context = {'order_items': order_items, 'order': order, 'cart_items': cart_items}
     return render(request, 'core/cart.html', context=context)
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        order_items = order.orderitem_set.all()
-    else:
-        customer = {}
-        order_items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
+    data = cart_data(request)
+    order_items = data['order_items']
+    order = data['order']
+    cart_items = data['cart_items']
 
-    context = {'order_items': order_items, 'order': order}
-    print(context)
-    print(customer)
+    context = {'order_items': order_items, 'order': order, 'cart_items': cart_items}
     return render(request, 'core/checkout.html', context=context)
 
 
@@ -107,6 +93,14 @@ def process_order(request):
                 county=data['shippingInfo']['county'],
                 country=data['shippingInfo']['country'],
             )
+    else:
+        print('User not logged in')
+        print(request.COOKIES)
+        print(data)
+        name = data['form']['name']
+        email = data['form']['email']
+        phone = data['form']['phone']
+        print(name)
     response = {
         'Payment': 'Complete',
     }
