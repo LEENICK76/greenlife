@@ -5,9 +5,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import *
 
-
 # Create your views here.
-from .utils import cookie_cart, cart_data
+from .utils import cookie_cart, cart_data, guest_order
 
 
 def home(request):
@@ -77,30 +76,30 @@ def process_order(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = float(data['form']['total'])
-        order.transaction_id = transaction_id
 
-        if total == order.get_cart_total:
-            order.complete = True
-        order.save()
-
-        if order.complete:
-            ShippingAddress.objects.create(
-                customer=customer,
-                order=order,
-                number=customer.number,
-                address=data['shippingInfo']['address'],
-                county=data['shippingInfo']['county'],
-                country=data['shippingInfo']['country'],
-            )
     else:
-        print('User not logged in')
-        print(request.COOKIES)
-        print(data)
-        name = data['form']['name']
-        email = data['form']['email']
-        phone = data['form']['phone']
-        print(name)
+        customer, order = guest_order(request, data)
+
+    print('mavostee')
+    print(data)
+
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+    print(order.get_cart_total)
+    if total == float(order.get_cart_total):
+        print('hello we going')
+        order.complete = True
+    order.save()
+
+    if order.complete:
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            number=customer.number,
+            address=data['shippingInfo']['address'],
+            county=data['shippingInfo']['county'],
+            country=data['shippingInfo']['country'],
+        )
     response = {
         'Payment': 'Complete',
     }

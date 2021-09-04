@@ -43,7 +43,7 @@
                                                             <label for="input_name">Enter your name</label>
                                                             <input type="text" name="name" value="" placeholder="Your Name" class="txt-input">
                                                             <label for="input_phone">Enter your Phone number</label>
-                                                            <input type="tel" name="phone" value="" placeholder="Phone Number" class="txt-input">
+                                                            <input type="tel" name="phone" value="" placeholder="Phone Number" class="number">
                                                         </div>
                                                         <div class="form-row" id="user-location">
                                                             <label for="text">Enter your location</label>
@@ -180,6 +180,7 @@
             document.getElementById('cart-button').classList.add('hidden')
             document.getElementById('form-cart').classList.add('hidden')
             document.getElementById('payment').classList.remove('hidden')
+            document.getElementById('cart-payment').classList.remove('hidden');
 
             document.getElementById('cart-payment').addEventListener('click', function (e){
                 submitFormData()
@@ -191,6 +192,7 @@
             var userFormData = {
                 'name': null,
                 'email': null,
+                'phone': null,
                 'total': total,
             }
             var shippingInfo = {
@@ -207,6 +209,7 @@
             else{
                 userFormData.name = form.name.value;
                 userFormData.email = form.email.value;
+                userFormData.phone = form.phone.value;
                 shippingInfo.country = "Kenya"
                 shippingInfo.county = form.county.value;
                 shippingInfo.address = form.address.value;
@@ -217,7 +220,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
+                    'X-CSRFToken': csrftoken,
                 },
                 body: JSON.stringify({'form': userFormData, 'shippingInfo': shippingInfo})
             })
@@ -225,6 +228,9 @@
             .then((data) => {
                 console.log('Success:', data);
                 alert('Transaction Complete');
+
+                cart = {}
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
                 window.location.href = "{% url 'home' %}"
             })
         }

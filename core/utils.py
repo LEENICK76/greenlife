@@ -1,7 +1,7 @@
 import json
 
 from Products.models import Product
-from core.models import Order
+from core.models import Order, OrderItem, Customer
 
 
 def cookie_cart(request):
@@ -20,10 +20,13 @@ def cookie_cart(request):
             cart_items += cart_guest[i]['quantity']
 
             product = Product.objects.get(id=i)
-            total = product.price * cart_guest[i]['quantity']
+            total = (product.price * cart_guest[i]['quantity'])
 
             order['get_cart_items'] += cart_guest[i]['quantity']
             order['get_cart_total'] += total
+            print('mbogooooo')
+            print(order['get_cart_total'])
+            print(total)
 
             order_item = {
                 'product': {
@@ -55,3 +58,32 @@ def cart_data(request):
         cart_items = cookie_data['cart_items']
 
     return {'order_items': order_items, 'order': order, 'cart_items': cart_items}
+
+
+def guest_order(request, data):
+    print('User not logged in')
+    print(request.COOKIES)
+    print(data)
+    name = data['form']['name']
+    email = data['form']['email']
+    phone = data['form']['phone']
+
+    cookie_data = cookie_cart(request)
+    order_items = cookie_data['order_items']
+
+    customer, created = Customer.objects.get_or_create(number=phone)
+    customer.name = name
+    customer.email = email
+    customer.save()
+
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    for item in order_items:
+        product = Product.objects.get(id=item['product']['id'])
+
+        order_item = OrderItem.objects.create(
+            order=order,
+            product=product,
+            quantity=item['quantity']
+        )
+    return customer, order
