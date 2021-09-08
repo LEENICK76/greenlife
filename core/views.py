@@ -80,9 +80,6 @@ def process_order(request):
     else:
         customer, order = guest_order(request, data)
 
-    print('mavostee')
-    print(data)
-
     total = float(data['form']['total'])
     order.transaction_id = transaction_id
     print(order.get_cart_total)
