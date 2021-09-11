@@ -1,14 +1,12 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from accounts.forms import RegisterForm
+from Products.models import Seller
+from accounts.forms import RegisterForm, LoginForm
 from core.models import Customer
-
-
-def login(request):
-
-    return render(request, 'auth/login.html')
 
 
 def register(request):
@@ -17,17 +15,50 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            name = form.cleaned_data['name']
+            username = form.cleaned_data['username']
             number = form.cleaned_data['number']
             email = form.cleaned_data['email']
-            Customer.objects.create(
-                name=name,
-                number=number,
-                email=email,
-                user=user
-            )
+            account = form.cleaned_data['account_type']
+            if account == 'CUSTOMER':
+                Customer.objects.create(
+                    name=username,
+                    number=number,
+                    email=email,
+                    user=user
+                )
+            elif account == 'FARMER':
+                Seller.objects.create(
+                    name=username,
+                    number=number,
+                    email=email,
+                    user=user
+                )
+
+            messages.success(request, f'Account for {username} was created successfully')
 
             print(form)
             return redirect('login')
     context = {'form': form}
     return render(request, 'auth/register.html', context=context)
+
+
+def login_page(request):
+    if request.method == 'POST':
+        username = request.POST.get['username']
+        password = request.POST.get['password']
+
+        user = authenticate(request, password=password, username=username)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                redirect('home')
+            else:
+                messages.warning(request, 'Your account is disabled, contact us for support')
+        else:
+            messages.info(request, 'Either your password or email is incorrect')
+    return render(request, 'auth/login.html')
+
+
+def logout_view(request):
+    logout(request)
+    redirect('login')
