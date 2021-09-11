@@ -18,21 +18,31 @@ def register(request):
             username = form.cleaned_data['username']
             number = form.cleaned_data['number']
             email = form.cleaned_data['email']
-            account = form.cleaned_data['account_type']
-            if account == 'CUSTOMER':
-                Customer.objects.create(
-                    name=username,
-                    number=number,
-                    email=email,
-                    user=user
-                )
-            elif account == 'FARMER':
-                Seller.objects.create(
-                    name=username,
-                    number=number,
-                    email=email,
-                    user=user
-                )
+            # account = form.cleaned_data['account_type']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            user.profile.first_name = first_name
+            user.profile.last_name = last_name
+            user.profile.phone = number
+            user.customer.number = number
+            user.customer.email = email
+            user.customer.name = first_name
+            user.profile.save()
+            user.customer.save()
+            # if account == 'CUSTOMER':
+            #     Customer.objects.create(
+            #         name=username,
+            #         number=number,
+            #         email=email,
+            #         user=user
+            #     )
+            # elif account == 'FARMER':
+            #     Seller.objects.create(
+            #         name=username,
+            #         number=number,
+            #         email=email,
+            #         user=user
+            #     )
 
             messages.success(request, f'Account for {username} was created successfully')
 

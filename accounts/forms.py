@@ -23,6 +23,19 @@ class RegisterForm(UserCreationForm):
             'placeholder': 'Enter your name'
         }
     ))
+    first_name = forms.CharField(max_length=100, widget=forms.TextInput(
+        attrs={
+            'class': 'form-row txt-input',
+            'placeholder': 'Enter your name'
+        }
+    ))
+    last_name = forms.CharField(max_length=100, widget=forms.TextInput(
+        attrs={
+            'class': 'form-row txt-input',
+            'placeholder': 'Enter your name'
+        }
+    ))
+
     email = forms.EmailField(widget=forms.TextInput(
         attrs={
             'class': 'input-text',
@@ -30,14 +43,14 @@ class RegisterForm(UserCreationForm):
         }
     ))
     number = forms.IntegerField()
-    account_type = forms.ChoiceField(choices=AccountType.choices(), widget=forms.Select(
-        attrs={'class': 'input-text nice-select orderby',
-               'style': 'color:red'
-               }))
+    # account_type = forms.ChoiceField(choices=AccountType.choices(), widget=forms.Select(
+    #     attrs={'class': 'input-text nice-select orderby',
+    #            'style': 'color:red'
+    #            }))
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'number', 'account_type', 'password1', 'password2')
+        fields = ('username', 'email', 'number', 'password1', 'password2')
 
 
 class LoginForm(AuthenticationForm):
