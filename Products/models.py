@@ -4,7 +4,7 @@ from django.db import models
 
 # Create your models here.
 class Seller(models.Model):
-    user = models.OneToOneField(User, blank=False, null=False, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, blank=False, null=False, related_name='seller', on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False)
     email = models.CharField(max_length=255, null=False)
     county = models.CharField(max_length=255)

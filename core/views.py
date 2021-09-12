@@ -1,12 +1,20 @@
 import datetime
 import json
 
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import *
 
 # Create your views here.
 from .utils import cookie_cart, cart_data, guest_order
+
+
+def search(request):
+    query = request.GET.get('query', '')
+    product = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    
+    return render(request, 'search.html', {'query': query, 'product': product})
 
 
 def home(request):
@@ -19,7 +27,7 @@ def home(request):
     context = {
         'products': products,
         'cart_items': cart_items,
-        'order_items': order_items
+        'order_items': order_items,
     }
     return render(request, 'core/home.html', context=context)
 

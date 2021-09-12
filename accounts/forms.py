@@ -3,6 +3,9 @@ from enum import Enum
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.forms import ModelForm
+
+from Products.models import Seller
 
 
 class RegisterForm(UserCreationForm):
@@ -43,6 +46,7 @@ class RegisterForm(UserCreationForm):
         }
     ))
     number = forms.IntegerField()
+
     # account_type = forms.ChoiceField(choices=AccountType.choices(), widget=forms.Select(
     #     attrs={'class': 'input-text nice-select orderby',
     #            'style': 'color:red'
@@ -60,3 +64,11 @@ class LoginForm(AuthenticationForm):
     email = forms.EmailField()
     password = forms.PasswordInput()
 
+
+class FarmerForm(ModelForm):
+    def _init_(self, *args, **kwargs):
+        super(FarmerForm, self)._init_(*args, **kwargs)
+
+    class Meta:
+        model = Seller
+        exclude = ['email', 'user']
