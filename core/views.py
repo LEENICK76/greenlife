@@ -1,6 +1,8 @@
 import datetime
 import json
 
+from django.conf import settings
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -13,7 +15,7 @@ from .utils import cookie_cart, cart_data, guest_order
 def search(request):
     query = request.GET.get('query', '')
     product = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
-    
+
     return render(request, 'search.html', {'query': query, 'product': product})
 
 
@@ -109,4 +111,25 @@ def process_order(request):
         'Payment': 'Complete',
     }
     print(request.body)
+
+    notify_vendor(request, order)
+    notify_customer(request, order)
     return JsonResponse(response, safe=False)
+
+
+def notify_vendor(request, order):
+    mails = [x[0] for x in order.orderitem_set.all().values_list('product__posted_by__user__email') if
+             x[0] != '']
+    subject = 'You have an order'
+    message = f'Hi, you have an order from {request.user.username}.'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = mails
+    send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+
+def notify_customer(request, order):
+    subject = 'Order Complete'
+    message = f'Hi, {request.user.username}. You successfully made an order.'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [request.user.email]
+    send_mail(subject, message, email_from, recipient_list, fail_silently=False)

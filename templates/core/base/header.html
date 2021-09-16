@@ -23,15 +23,16 @@
                             <option value="usd">¥ JPY (Yen)</option>
                         </select>
                     </li>
-                    <li class="horz-menu-item lang">
-                        <select name="language">
-                            <option value="fr">French (EUR)</option>
-                            <option value="en" selected>English (USD)</option>
-                            <option value="ger">Germany (GBP)</option>
-                            <option value="jp">Japan (JPY)</option>
-                        </select>
-                    </li>
-                    <li><a href="login.html" class="login-link"><i class="biolife-icon icon-login"></i>Login/Register</a></li>
+{#                    <li class="horz-menu-item lang">#}
+{#                        <select name="language">#}
+{#                            <option value="fr">French (EUR)</option>#}
+{#                            <option value="en" selected>English (USD)</option>#}
+{#                            <option value="ger">Germany (GBP)</option>#}
+{#                            <option value="jp">Japan (JPY)</option>#}
+{#                        </select>#}
+{#                    </li>#}
+                    <li><a href="{% url 'logout' %}" class="login-link"><i class="biolife-icon glyphicon-log-out"></i>LogOut</a></li>
+                    <li><a href="{% url 'login' %}" class="login-link"><i class="biolife-icon icon-login"></i>Login/Register</a></li>
                 </ul>
             </div>
         </div>
@@ -193,15 +194,17 @@
                                 </div>
                             </li>
                             <li class="menu-item menu-item-has-children has-megamenu">
-                                <a href="#" class="menu-name" data-title="Blog">Blog</a>
+                                <a href="#" class="menu-name" data-title="Blog">Farmer</a>
                                 <div class="wrap-megamenu lg-width-800 md-width-750">
                                     <div class="mega-content">
                                         <div class="col-lg-3 col-md-3 col-xs-6">
                                             <div class="wrap-custom-menu vertical-menu">
-                                                <h4 class="menu-title">Blog Categories</h4>
+                                                <h4 class="menu-title">Blog Platform</h4>
                                                 <ul class="menu">
-                                                    <li><a href="#">Beauty (30)</a></li>
-                                                    <li><a href="#">Fashion (50)</a></li>
+                                                    {% if user.seller.exists %}
+                                                        <li><a href="{% url 'add_product' %}">Add Product</a></li>
+                                                    {% endif %}
+                                                    <li><a href="{% url 'become-farmer' %}">Become Farmer</a></li>
                                                     <li><a href="#">Food (10)</a></li>
                                                     <li><a href="#">Life Style (60)</a></li>
                                                     <li><a href="#">Travel (10)</a></li>
@@ -210,20 +213,20 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-3 col-xs-6">
-                                            <div class="wrap-custom-menu vertical-menu">
-                                                <h4 class="menu-title">Featured Posts</h4>
-                                                <ul class="menu">
-                                                    <li><a href="#">Post example<sup>#1</sup></a></li>
-                                                    <li><a href="#">Post example<sup>#2</sup></a></li>
-                                                    <li><a href="#">Post example<sup>#3</sup></a></li>
-                                                    <li><a href="#">Post example<sup>#4</sup></a></li>
-                                                    <li><a href="#">Post example<sup>#5</sup></a></li>
-                                                    <li><a href="#">Post example<sup>#6</sup></a></li>
-                                                    <li><a href="#">Post example<sup>#7</sup></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+{#                                        <div class="col-lg-3 col-md-3 col-xs-6">#}
+{#                                            <div class="wrap-custom-menu vertical-menu">#}
+{#                                                <h4 class="menu-title">Featured Posts</h4>#}
+{#                                                <ul class="menu">#}
+{#                                                    <li><a href="#">Post example<sup>#1</sup></a></li>#}
+{#                                                    <li><a href="#">Post example<sup>#2</sup></a></li>#}
+{#                                                    <li><a href="#">Post example<sup>#3</sup></a></li>#}
+{#                                                    <li><a href="#">Post example<sup>#4</sup></a></li>#}
+{#                                                    <li><a href="#">Post example<sup>#5</sup></a></li>#}
+{#                                                    <li><a href="#">Post example<sup>#6</sup></a></li>#}
+{#                                                    <li><a href="#">Post example<sup>#7</sup></a></li>#}
+{#                                                </ul>#}
+{#                                            </div>#}
+{#                                        </div>#}
                                         <div class="col-lg-6 col-md-6 col-xs-12 md-margin-top-0 xs-margin-top-25px">
                                             <div class="block-posts">
                                                 <h4 class="menu-title">Recent Posts</h4>
@@ -269,10 +272,10 @@
                     </div>
                 </div>
 {#            search#}
-                <div class="col-lg-9 col-md-8 padding-top-2px">
-                        <div class="header-search-bar layout-01">
-                            <form action="{% url 'search' %}" class="form-search" name="desktop-seacrh" method="get">
-                                <input type="text" name="s" class="input-text" value="" placeholder="Search here...">
+{#                <div class="col-lg-9 col-md-8 padding-top-2px">#}
+{#                        <div class="header-search-bar layout-01">#}
+{#                            <form action="{% url 'search' %}" class="form-search" name="desktop-seacrh" method="get">#}
+{#                                <input type="text" name="s" class="input-text" value="" placeholder="Search here...">#}
 {#                                <select name="category">#}
 {#                                    <option value="-1" selected>All Categories</option>#}
 {#                                    <option value="vegetables">Vegetables</option>#}
@@ -285,14 +288,14 @@
 {#                                    <option value="papaya_crisps">Papaya & Crisps</option>#}
 {#                                    <option value="oatmeal">Oatmeal</option>#}
 {#                                </select>#}
-                                <button type="submit" class="btn-submit"><i class="biolife-icon icon-search"></i></button>
-                            </form>
-                        </div>
-                        <div class="live-info">
-                            <p class="telephone"><i class="fa fa-phone" aria-hidden="true"></i><b class="phone-number">(+900) 123 456 7891</b></p>
-                            <p class="working-time">Mon-Fri: 8:30am-7:30pm; Sat-Sun: 9:30am-4:30pm</p>
-                        </div>
-                    </div>
+{#                                <button type="submit" class="btn-submit"><i class="biolife-icon icon-search"></i></button>#}
+{#                            </form>#}
+{#                        </div>#}
+{#                        <div class="live-info">#}
+{#                            <p class="telephone"><i class="fa fa-phone" aria-hidden="true"></i><b class="phone-number">(+254) 726 422 225</b></p>#}
+{#                            <p class="working-time">Mon-Fri: 8:30am-7:30pm; Sat-Sun: 9:30am-4:30pm</p>#}
+{#                        </div>#}
+{#                    </div>#}
 {#                --------------#}
                 <div class="col-lg-3 col-md-3 col-md-6 col-xs-6">
                     <div class="biolife-cart-info">
@@ -318,16 +321,17 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="wishlist-block hidden-sm hidden-xs">
-                            <a href="#" class="link-to">
-                                <span class="icon-qty-combine">
-                                    <i class="icon-heart-bold biolife-icon"></i>
-                                    <span class="qty">4</span>
-                                </span>
-                            </a>
-                        </div>
+{#                        <div class="wishlist-block hidden-sm hidden-xs">#}
+{#                            <a href="#" class="link-to">#}
+{#                                <span class="icon-qty-combine">#}
+{#                                    <i class="icon-heart-bold biolife-icon"></i>#}
+{#                                    <span class="qty">4</span>#}
+{#                                </span>#}
+{#                            </a>#}
+{#                        </div>#}
                     <!-- onscreen product cart -->
                         {% include 'core/base/basket.html' %}
+
 
                         <div class="mobile-menu-toggle">
                             <a class="btn-toggle" data-object="open-mobile-menu" href="javascript:void(0)">

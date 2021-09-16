@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.utils.text import slugify
 
 from Products.models import Seller, Product
-from Vendors.forms import ProductForm
+from Vendors.forms import ProductForm, ProductRequestForm
+from Vendors.models import ProductRequest
 from accounts.forms import FarmerForm
 
 
@@ -66,3 +68,41 @@ def add_product(request):
         messages.warning(request, 'Sign Up to be a farmer first')
         return redirect('become-farmer')
     return render(request, 'add-product.html', {'form': form})
+
+
+@login_required
+def make_product_request(request):
+    customer = request.user.customer
+    if customer:
+        if request.method == 'POST':
+            form = ProductRequestForm(request.POST)
+            if form.is_valid():
+                category = form.cleaned_data['category']
+                name = form.cleaned_data['name']
+                description = form.cleaned_data['description']
+                ProductRequest.objects.create(
+                    customer=customer,
+                    category=category,
+                    name=name,
+                    description=description,
+                )
+                return redirect('my-request')
+        else:
+            form = ProductRequestForm()
+    else:
+        messages.warning(request, 'Login to make requests')
+        return redirect('login')
+    return render(request, 'add-request.html', {'form': form})
+
+
+@login_required
+def my_requests(request):
+    user = request.user
+    if user.is_authenticated:
+        customer = user.customer
+        product = ProductRequest.objects.filter(customer=customer)
+    else:
+        messages.warning(request, 'Login first')
+        return redirect('login')
+
+    return render(request, 'my-requests.html', {'product': product})

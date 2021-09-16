@@ -2,7 +2,8 @@
 {% load static %}
 {% block title %}HomePage{% endblock %}
 {% block body %}
-
+{% block basket %}
+{% endblock %}
     <div class="container">
         {% for message in messages %}
             <p class="alert-warning">{{ message }}</p>
@@ -43,77 +44,214 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-content">
-                            <div id="tab01_1st" class="tab-contain active">
-                                <ul class="products-list biolife-carousel nav-center-02 nav-none-on-mobile eq-height-contain" data-slick='{"rows":1 ,"arrows":true,"dots":false,"infinite":true,"speed":400,"slidesMargin":10,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 4}},{"breakpoint":992, "settings":{ "slidesToShow": 3, "slidesMargin":20 }},{"breakpoint":768, "settings":{ "slidesToShow": 2,"rows":2, "slidesMargin":15 }}]}'>
+
+{#                    products like cart#}
+                        <div class="shopping-cart-container">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                            <h3 class="box-title">Your Products</h3>
+                            <form class="shopping-cart-form" action="#" method="post">
+                                <table class="shop_table cart-form">
+                                    <thead>
+                                    <tr>
+
+                                        <th class="product-name">Product Name</th>
+                                        <th class="product-price">Product Price</th>
+{#                                        <th class="product-quantity">Quantity</th>#}
+{#                                        <th class="product-subtotal">Total</th>#}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                     {% for product in products %}
-                                    <li class="product-item">
-                                        <div class="contain-product layout-default">
-                                            <div class="product-thumb">
-                                                <a href="#" class="link-to-product">
-                                                    <img src="{{ product.imageURL }}" alt="Vegetables" width="270" height="270" class="product-thumnail">
-                                                </a>
-                                                <a class="lookup btn_call_quickview" href="#"><i class="biolife-icon icon-search"></i></a>
+                                    <tr class="cart_item">
+                                        <td class="product-thumbnail" data-title="Product Name">
+                                            <a class="prd-thumb" href="#">
+                                                <figure><img width="113" height="113" src="{{ product.imageURL }}" alt="shipping cart"></figure>
+                                            </a>
+                                            <a class="prd-name" href="#">{{ product.name }}</a>
+                                            <div class="action">
+                                                <a href="#" class="edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                <a href="#" class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                             </div>
-                                            <div class="info">
-                                                <b class="categories">{{ product.category }}</b>
-                                                <h4 class="product-title"><a href="#" class="pr-name">{{ product.name }}</a></h4>
-                                                <div class="price ">
-                                                    <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ product.price }}</span></ins>
-                                                    <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
-                                                </div>
-                                                <div class="slide-down-box">
-                                                    <p class="message">All products are carefully selected to ensure food safety.</p>
-                                                    <div class="buttons">
-                                                        <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>
-{#                                                        <button data-product={{ product.id }} data-action="add" class="btn update-cart"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</button>#}
-                                                        <a href="#" data-product={{ product.id }} data-action="add" class="btn add-to-cart-btn update-cart"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>
-                                                        <a href="#" class="btn compare-btn"><i class="fa fa-random" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
+                                        </td>
+                                        <td class="product-price" data-title="Price">
+                                            <div class="price price-contain">
+                                                <ins><span class="price-amount"><span class="currencySymbol">Ksh</span>{{ product.price }}</span></ins>
+                                                <del><span class="price-amount"><span class="currencySymbol">Ksh</span>95.00</span></del>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </td>
+{#                                        <td class="product-quantity" data-title="Quantity">#}
+{#                                            <div class="quantity-box type-02">#}
+{#                                                <div class="qty-input">#}
+{#                                                    <input type="text" name="qty12554" value="{{ product.quantity }}" data-max_value="20" data-min_value="1" data-step="1">#}
+{#                                                    <a href="#" class="qty-btn btn-up"><i data-product="{{ product.id }}" data-action="add" class="fa fa-caret-up update-cart" aria-hidden="true"></i></a>#}
+{#                                                    <a href="#" class="qty-btn btn-down"><i data-product="{{ product.id }}" data-action="removed" class="fa fa-caret-down update-cart" aria-hidden="true"></i></a>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="product-subtotal" data-title="Total">#}
+{#                                            <div class="price price-contain">#}
+{#                                                <ins><span class="price-amount"><span class="currencySymbol">Ksh </span>{{ product.get_total }}</span></ins>#}
+{#                                                <del><span class="price-amount"><span class="currencySymbol">Ksh </span>95.00</span></del>#}
+{#                                            </div>#}
+{#                                        </td>#}
+                                    </tr>
                                     {% endfor %}
-                                </ul>
-                            </div>
-                        {% if products %}
-                            <div id="tab01_3rd" class="tab-contain ">
-                                <ul class="products-list biolife-carousel nav-center-02 nav-none-on-mobile eq-height-contain" data-slick='{"rows":1 ,"arrows":true,"dots":false,"infinite":true,"speed":400,"slidesMargin":10,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 4}},{"breakpoint":992, "settings":{ "slidesToShow": 3, "slidesMargin":20 }},{"breakpoint":768, "settings":{ "slidesToShow": 2,"rows":2, "slidesMargin":15 }}]}'>
-                                    {% for product in products %}
-                                    <li class="product-item">
-                                        <div class="contain-product layout-default">
-                                            <div class="product-thumb">
-                                                <a href="#" class="link-to-product">
-                                                    <img src="{{ product.imageURL }}" alt="Vegetables" width="270" height="270" class="product-thumnail">
-                                                </a>
-                                                <a class="lookup btn_call_quickview" href="#"><i class="biolife-icon icon-search"></i></a>
-                                            </div>
-                                            <div class="info">
-                                                <b class="categories">{{ product.category }}</b>
-                                                <h4 class="product-title"><a href="{{ product.get_absolute_url }}" class="pr-name">{{ product.title }}</a></h4>
-                                                <div class="price ">
-                                                    <ins><span class="price-amount"><span class="currencySymbol">£</span>{{  product.price }}</span></ins>
-                                                    <del><span class="price-amount"><span class="currencySymbol">£</span>Lee</span></del>
-                                                </div>
-                                                <div class="slide-down-box">
-                                                    <p class="message">All products are carefully selected to ensure food safety.</p>
-                                                    <div class="buttons">
-                                                        <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                                                        <a href="#" class="btn add-to-cart-btn"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>
-                                                        <a href="#" class="btn compare-btn"><i class="fa fa-random" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    {% endfor %}
-                        {% else %}
-                            <p class="message">You do not have any products yet.</p>
-                        {% endif %}
-                                </ul>
-                            </div>
+{#                                    <tr class="cart_item">#}
+{#                                        <td class="product-thumbnail" data-title="Product Name">#}
+{#                                            <a class="prd-thumb" href="#">#}
+{#                                                <figure><img width="113" height="113" src="{% static 'assets/images/shippingcart/pr-02.jpg' %}" alt="shipping cart"></figure>#}
+{#                                            </a>#}
+{#                                            <a class="prd-name" href="#">National Fresh Fruit</a>#}
+{#                                            <div class="action">#}
+{#                                                <a href="#" class="edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>#}
+{#                                                <a href="#" class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i></a>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="product-price" data-title="Price">#}
+{#                                            <div class="price price-contain">#}
+{#                                                <ins><span class="price-amount"><span class="currencySymbol">Ksh</span>85.00</span></ins>#}
+{#                                                <del><span class="price-amount"><span class="currencySymbol">Ksh</span>95.00</span></del>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="product-quantity" data-title="Quantity">#}
+{#                                            <div class="quantity-box type1">#}
+{#                                                <div class="qty-input">#}
+{#                                                    <input type="text" name="qty12554" value="1" data-max_value="20" data-min_value="1" data-step="1">#}
+{#                                                    <a href="#" class="qty-btn btn-up"><i class="fa fa-caret-up" aria-hidden="true"></i></a>#}
+{#                                                    <a href="#" class="qty-btn btn-down"><i class="fa fa-caret-down" aria-hidden="true"></i></a>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="product-subtotal" data-title="Total">#}
+{#                                            <div class="price price-contain">#}
+{#                                                <ins><span class="price-amount"><span class="currencySymbol">Ksh</span>85.00</span></ins>#}
+{#                                                <del><span class="price-amount"><span class="currencySymbol">Ksh</span>95.00</span></del>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                    </tr>#}
+                                    <tr class="cart_item wrap-buttons">
+                                        <td class="wrap-btn-control" colspan="4">
+                                            <a href="{% url 'add_product' %}" class="btn back-to-shop">Add Products</a>
+{#                                            <button class="btn btn-update" type="submit" disabled>update</button>#}
+{#                                            <button class="btn btn-clear" type="reset">clear all</button>#}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
+{#                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">#}
+{#                            <div class="shpcart-subtotal-block">#}
+{#                                <div class="subtotal-line">#}
+{#                                    <b class="stt-name">Subtotal <span class="sub">( {{ order.get_cart_items }} items)</span></b>#}
+{#                                    <span class="stt-price">{{ order.get_cart_total }}</span>#}
+{#                                </div>#}
+{#                                <div class="subtotal-line">#}
+{#                                    <b class="stt-name">Shipping</b>#}
+{#                                    <span class="stt-price">Ksh0.00</span>#}
+{#                                </div>#}
+{#                                <div class="tax-fee">#}
+{#                                    <p class="title">Est. Taxes & Fees</p>#}
+{#                                    <p class="desc">Based on 56789</p>#}
+{#                                </div>#}
+{#                                <div class="btn-checkout">#}
+{#                                    <a href="#" class="btn checkout">Check out</a>#}
+{#                                </div>#}
+{#                                <div class="biolife-progress-bar">#}
+{#                                    <table>#}
+{#                                        <tr>#}
+{#                                            <td class="first-position">#}
+{#                                                <span class="index">$0</span>#}
+{#                                            </td>#}
+{#                                            <td class="mid-position">#}
+{#                                                <div class="progress">#}
+{#                                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>#}
+{#                                                </div>#}
+{#                                            </td>#}
+{#                                            <td class="last-position">#}
+{#                                                <span class="index">$99</span>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                    </table>#}
+{#                                </div>#}
+{#                                <p class="pickup-info"><b>Free Pickup</b> is available as soon as today More about shipping and pickup</p>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                </div>
+{#                    products#}
+{#                        <div class="tab-content">#}
+{#                            <div id="tab01_1st" class="tab-contain active">#}
+{#                                <ul class="products-list biolife-carousel nav-center-02 nav-none-on-mobile eq-height-contain" data-slick='{"rows":1 ,"arrows":true,"dots":false,"infinite":true,"speed":400,"slidesMargin":10,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 4}},{"breakpoint":992, "settings":{ "slidesToShow": 3, "slidesMargin":20 }},{"breakpoint":768, "settings":{ "slidesToShow": 2,"rows":2, "slidesMargin":15 }}]}'>#}
+{#                                    {% for product in products %}#}
+{#                                    <li class="product-item">#}
+{#                                        <div class="contain-product layout-default">#}
+{#                                            <div class="product-thumb">#}
+{#                                                <a href="#" class="link-to-product">#}
+{#                                                    <img src="{{ product.imageURL }}" alt="Vegetables" width="270" height="270" class="product-thumnail">#}
+{#                                                </a>#}
+{#                                                <a class="lookup btn_call_quickview" href="#"><i class="biolife-icon icon-search"></i></a>#}
+{#                                            </div>#}
+{#                                            <div class="info">#}
+{#                                                <b class="categories">{{ product.category }}</b>#}
+{#                                                <h4 class="product-title"><a href="#" class="pr-name">{{ product.name }}</a></h4>#}
+{#                                                <div class="price ">#}
+{#                                                    <ins><span class="price-amount"><span class="currencySymbol">Ksh</span>{{ product.price }}</span></ins>#}
+{#                                                    <del><span class="price-amount"><span class="currencySymbol">Ksh</span>95.00</span></del>#}
+{#                                                </div>#}
+{#                                                <div class="slide-down-box">#}
+{#                                                    <p class="message">All products are carefully selected to ensure food safety.</p>#}
+{#                                                    <div class="buttons">#}
+{#                                                        <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>#}
+{#                                                        <button data-product={{ product.id }} data-action="add" class="btn update-cart"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</button>#}
+{#                                                        <a href="#" data-product={{ product.id }} data-action="add" class="btn add-to-cart-btn update-cart"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>#}
+{#                                                        <a href="#" class="btn compare-btn"><i class="fa fa-random" aria-hidden="true"></i></a>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </li>#}
+{#                                    {% endfor %}#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        {% if products %}#}
+{#                            <div id="tab01_3rd" class="tab-contain ">#}
+{#                                <ul class="products-list biolife-carousel nav-center-02 nav-none-on-mobile eq-height-contain" data-slick='{"rows":1 ,"arrows":true,"dots":false,"infinite":true,"speed":400,"slidesMargin":10,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 4}},{"breakpoint":992, "settings":{ "slidesToShow": 3, "slidesMargin":20 }},{"breakpoint":768, "settings":{ "slidesToShow": 2,"rows":2, "slidesMargin":15 }}]}'>#}
+{#                                    {% for product in products %}#}
+{#                                    <li class="product-item">#}
+{#                                        <div class="contain-product layout-default">#}
+{#                                            <div class="product-thumb">#}
+{#                                                <a href="#" class="link-to-product">#}
+{#                                                    <img src="{{ product.imageURL }}" alt="Vegetables" width="270" height="270" class="product-thumnail">#}
+{#                                                </a>#}
+{#                                                <a class="lookup btn_call_quickview" href="#"><i class="biolife-icon icon-search"></i></a>#}
+{#                                            </div>#}
+{#                                            <div class="info">#}
+{#                                                <b class="categories">{{ product.category }}</b>#}
+{#                                                <h4 class="product-title"><a href="{{ product.get_absolute_url }}" class="pr-name">{{ product.title }}</a></h4>#}
+{#                                                <div class="price ">#}
+{#                                                    <ins><span class="price-amount"><span class="currencySymbol">Ksh</span>{{  product.price }}</span></ins>#}
+{#                                                    <del><span class="price-amount"><span class="currencySymbol">Ksh</span>Lee</span></del>#}
+{#                                                </div>#}
+{#                                                <div class="slide-down-box">#}
+{#                                                    <p class="message">All products are carefully selected to ensure food safety.</p>#}
+{#                                                    <div class="buttons">#}
+{#                                                        <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>#}
+{#                                                        <a href="#" class="btn add-to-cart-btn"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>#}
+{#                                                        <a href="#" class="btn compare-btn"><i class="fa fa-random" aria-hidden="true"></i></a>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </li>#}
+{#                                    {% endfor %}#}
+{#                        {% else %}#}
+{#                            <p class="message">You do not have any products yet.</p>#}
+{#                        {% endif %}#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>
