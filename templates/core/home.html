@@ -390,16 +390,16 @@
                         <p class="desc">Natural food is taken from the world's most modern farms with strict safety cycles</p>
                     </div>
                     <ul class="biolife-carousel nav-center-bold nav-none-on-mobile" data-slick='{"arrows":true,"dots":false,"infinite":false,"speed":400,"slidesMargin":30,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 3}},{"breakpoint":992, "settings":{ "slidesToShow": 3}},{"breakpoint":768, "settings":{ "slidesToShow": 2, "slidesMargin":10}}, {"breakpoint":500, "settings":{ "slidesToShow": 1}}]}'>
-                        {% for producta in products %}
+                        {% for producta in productf %}
                         <li>
                             <div class="biolife-cat-box-item">
                                 <div class="cat-thumb">
                                     <a href="#" class="cat-link">
-                                        <img src="{% static 'assets/images/home-04/cat-thumb01.jpg' %}" width="277" height="185" alt="">
+                                        <img src="{{ producta.imageURL }}" width="277" height="185" alt="">
                                     </a>
                                 </div>
                                 <a class="cat-info" href="#">
-                                    <h4 class="cat-name">Fresh Fruit</h4>
+                                    <h4 class="cat-name">{{ producta.name }}</h4>
                                     <span class="cat-number">(20 items)</span>
                                 </a>
                             </div>
@@ -538,9 +538,9 @@
                                 <li class="tab-element active">
                                     <a href="#tab01_1st" class="tab-link">Featured</a>
                                 </li>
-                                <li class="tab-element" >
-                                    <a href="#tab01_2nd" class="tab-link">Top Rated</a>
-                                </li>
+{#                                <li class="tab-element" >#}
+{#                                    <a href="#tab01_2nd" class="tab-link">Top Rated</a>#}
+{#                                </li>#}
                                 <li class="tab-element" >
                                     <a href="#tab01_3rd" class="tab-link">On Sale</a>
                                 </li>
@@ -563,7 +563,7 @@
                                                 <h4 class="product-title"><a href="#" class="pr-name">{{ product.name }}</a></h4>
                                                 <div class="price ">
                                                     <ins><span class="price-amount"><span class="currencySymbol">$</span>{{ product.price }}</span></ins>
-                                                    <del><span class="price-amount"><span class="currencySymbol">$</span>95.00</span></del>
+
                                                 </div>
                                                 <div class="slide-down-box">
                                                     <p class="message">{{ product.description }}</p>

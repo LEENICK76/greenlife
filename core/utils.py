@@ -24,7 +24,7 @@ def cookie_cart(request):
 
             order['get_cart_items'] += cart_guest[i]['quantity']
             order['get_cart_total'] += total
-            print('mbogooooo')
+            print('reached here')
             print(order['get_cart_total'])
             print(total)
 

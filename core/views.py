@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from Products.models import Category
 from .models import *
 
 # Create your views here.
@@ -21,12 +23,17 @@ def search(request):
 
 def home(request):
     products = Product.objects.all()
+    productf = Product.objects.filter(is_featured=True)
+    category = Category.objects.all()
+    productc = Product.objects.filter(category=category)
     data = cart_data(request)
     order_items = data['order_items']
     order = data['order']
     cart_items = data['cart_items']
 
     context = {
+        'productc': productc,
+        'productf': productf,
         'products': products,
         'cart_items': cart_items,
         'order_items': order_items,
