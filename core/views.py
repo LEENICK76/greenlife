@@ -140,3 +140,7 @@ def notify_customer(request, order):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [request.user.email]
     send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+
+def about_us(request):
+    return render(request, 'core/about-us.html')

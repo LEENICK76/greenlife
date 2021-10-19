@@ -157,7 +157,7 @@
                                                     <li class="menu-item" ><a href="blog-v01.html">Blog Style 01</a></li>
                                                     <li class="menu-item" ><a href="blog-v02.html">Blog Style 02</a></li>
 {#                                                    <li class="menu-item" ><a href="contact.html">Contact Us</a></li>#}
-                                                    <li class="menu-item" ><a href="about-us.html">About Us</a></li>
+                                                    <li class="menu-item" ><a href="{% url 'about' %}">About Us</a></li>
                                                     <li class="menu-item" ><a href="{% url 'checkout' %}">Checkout</a></li>
                                                     <li class="menu-item" ><a href="{% url 'cart' %}">Shopping Cart</a></li>
                                                     <li class="menu-item" ><a href="login.html">Login/Register</a></li>
@@ -196,7 +196,7 @@
                                 </div>
                             </li>
                             <li class="menu-item menu-item-has-children has-megamenu">
-                                <a href="#" class="menu-name" data-title="Blog">Farmer</a>
+                                <a href="#" class="menu-name" data-title="Blog">Sell</a>
                                 <div class="wrap-megamenu lg-width-800 md-width-750">
                                     <div class="mega-content">
                                         <div class="col-lg-3 col-md-3 col-xs-6">
@@ -206,9 +206,9 @@
                                                     {% if user.seller.exists %}
                                                         <li><a href="{% url 'add_product' %}">Add Product</a></li>
                                                     {% endif %}
-                                                    <li><a href="{% url 'become-farmer' %}">Become Farmer</a></li>
+                                                    <li><a href="{% url 'become-farmer' %}">Become a Seller</a></li>
                                                     <li><a href="{% url 'add-request' %}">Add Request</a></li>
-                                                    <li><a href="{% url 'admin-farmer' %}">Admin Farmer</a></li>
+                                                    <li><a href="{% url 'admin-farmer' %}">My Products</a></li>
                                                     <li><a href="#">Travel (10)</a></li>
                                                     <li><a href="#">Nutrition (35)</a></li>
                                                     <li><a href="#">Food Decoration (45)</a></li>
